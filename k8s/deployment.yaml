@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quickbite-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quickbite-backend
+  template:
+    metadata:
+      labels:
+        app: quickbite-backend
+    spec:
+      containers:
+        - name: quickbite-backend
+          image: rouakhribiche/quickbite-backend:latest
+          ports:
+            - containerPort: 3001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quickbite-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quickbite-frontend
+  template:
+    metadata:
+      labels:
+        app: quickbite-frontend
+    spec:
+      containers:
+        - name: quickbite-frontend
+          image: rouakhribiche/quickbite-frontend:latest
+          ports:
+            - containerPort: 80

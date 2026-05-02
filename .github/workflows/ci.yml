@@ -40,7 +40,17 @@ jobs:
       - name: 7. Build Docker backend
         run: docker build -t rouakhribiche/quickbite-backend:latest ./backend
 
-      - name: 8. Push Docker backend
+      - name: 8. Scan Docker image with Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+          trivy image --exit-code 0 --severity HIGH,CRITICAL rouakhribiche/quickbite-backend:latest
+
+      - name: 9. Push Docker backend
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u rouakhribiche --password-stdin
           docker push rouakhribiche/quickbite-backend:latest
@@ -71,7 +81,17 @@ jobs:
       - name: 7. Build Docker frontend
         run: docker build -t rouakhribiche/quickbite-frontend:latest ./frontend
 
-      - name: 8. Push Docker frontend
+      - name: 8. Scan Docker image with Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+          trivy image --exit-code 0 --severity HIGH,CRITICAL rouakhribiche/quickbite-frontend:latest
+
+      - name: 9. Push Docker frontend
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u rouakhribiche --password-stdin
           docker push rouakhribiche/quickbite-frontend:latest

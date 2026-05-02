@@ -18,6 +18,10 @@ function App() {
       .then(res => setOrders([...orders, res.data]));
   };
 
+  const deleteOrder = (id) => {
+    setOrders(orders.filter(order => order.id !== id));
+  };
+
   return (
     <div className="App">
       <h1>🍕 QuickBite</h1>
@@ -43,6 +47,9 @@ function App() {
           orders.map(order => (
             <div key={order.id} className="order-item">
               <p>{order.name} - ${order.price}</p>
+              <button onClick={() => deleteOrder(order.id)}>
+                Cancel
+              </button>
             </div>
           ))
         )}

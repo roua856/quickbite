@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
+// Mock axios to avoid network errors in CI
+jest.mock('axios', () => ({
+  get: jest.fn(() => Promise.resolve({ data: [] })),
+  post: jest.fn(() => Promise.resolve({ data: {} }))
+}));
+
 test('renders QuickBite title', () => {
   render(<App />);
   const title = screen.getByText(/QuickBite/i);

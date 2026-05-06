@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const BACKEND_URL = 'http://192.168.49.2:30001';
+
 function App() {
   const [menu, setMenu] = useState([]);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/menu')
+    axios.get(`${BACKEND_URL}/menu`)
       .then(res => setMenu(res.data));
-    axios.get('http://localhost:3001/orders')
+    axios.get(`${BACKEND_URL}/orders`)
       .then(res => setOrders(res.data));
   }, []);
 
   const placeOrder = (item) => {
-    axios.post('http://localhost:3001/orders', item)
+    axios.post(`${BACKEND_URL}/orders`, item)
       .then(res => setOrders([...orders, res.data]));
   };
 
@@ -25,7 +27,6 @@ function App() {
   return (
     <div className="App">
       <h1>🍕 QuickBite</h1>
-      
       <h2>Menu</h2>
       <div className="menu">
         {menu.map(item => (
@@ -38,7 +39,6 @@ function App() {
           </div>
         ))}
       </div>
-
       <h2>My Orders</h2>
       <div className="orders">
         {orders.length === 0 ? (
